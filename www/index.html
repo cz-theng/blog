@@ -1,0 +1,172 @@
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>双能卫|(CZ)</title>
+
+		<link rel="stylesheet" href="css/style.css">
+
+		<meta name="viewport" content="width=device-width">
+
+		
+	</head>
+	<body>
+		<div id="logo">
+			<p><a href="http://www.libcz.com"><img src="http://images.libcz.com:8000/images/logo.png" alt="Unslider logo" width="80" height="80"></a></p>
+			<p><a href="./about.html" class="btn">About</a></p>
+		</div>
+
+		<div class="features">
+			<ul class="wrap">
+				<li class="browser brief">
+					<b><a href="./blog">一二三博客</a></b>
+					<p>一篇篇文章，记录一次次尝试，装载一条条总结! </a>]</p>
+				</li>
+
+				<li class="keyboard brief">
+					<b><a href="./apps.html">App作品</a></b>
+					<p>后台程序猿，半路写起了App，Focus在iOS，也看Android，关注跨平台方案！</p>
+				</li>
+
+				<li class="height brief">
+					<b><a href="./index.html#proj">开源项目</a></b>
+					<p>在工作之余，学习自己感兴趣的，写点学习的产出，开源出来大家一起学习！</p>
+				</li>
+
+				<li class="responsive brief">
+					<b><a href="./index.html#ebook">小结电子书</a></b>
+					<p>将Blog分类总结，再作梳理，形成一个个小册子！</p>
+				</li>
+			</ul>
+		</div>
+
+		<div id="banner" class="banner">
+			<ul>
+				<li style="background-image: url('http://images.libcz.com:8000/images/bg_blog.jpg');">
+					<!--
+					<div class="inner">
+						<a class="btn" href="https://github.com/cz-it/magline">GitHub</a>
+					</div>
+					-->
+				</li>
+
+				<li style="background-image: url('http://images.libcz.com:8000/images/wood.jpg');">
+
+				</li>
+
+				<li style="background-image: url('http://images.libcz.com:8000/images/subway.jpg');">
+
+				</li>
+
+				<li style="background-image: url('http://images.libcz.com:8000/images/shop.jpg');">
+
+				</li>
+			</ul>
+		</div>
+
+
+		<div id="proj" class="projs wrap">
+			<h1>开源的小项目：</h1>
+			<br />
+			<ol>
+				<!--  a project -->
+				<li>
+					<div>
+						<h3>MagLine: A TCP/UDP Connection Layer.</h3>
+						<p>使用Golang实现后台连接服务器，包括了鉴权、加密通道、断线重连等连接层功能。使用c实现客户端接口，并Bind了其他语言接口如C#、Objectiv-C、Java等。为网络应用提供一个连接层解决方案</p>
+					</div>
+
+					<pre>
+
+MagLine:https://github.com/cz-it/magline
+MagNode:https://github.com/cz-it/magnode
+					</pre>
+				</li>
+
+				<!--  a project -->				
+				<li>
+					<div>
+						<h3>IAPC: In-App Procedure Call. </h3>
+						<p>在App中提供一套各个组件互相提供服务器的方案，有点类似OpenURL来调用其他App。不同的是IAPC聚焦于一个App内各个组件之间通过类似RPC的方式实现服务共享，如个人页面从登陆组件获得头像信息</p>
+					</div>
+
+					<pre> 
+GITHUB: https://github.com/cz-it/iapc
+					</pre>
+				</li>
+
+
+			</ol>
+		</div>
+
+		<div id="ebook" class="ebook">
+					<div class="wrap">
+						<h1>总结的小册子：</h1>
+						<br />
+						<h2>《Play and Record with CoreAudio》</h2>
+						<p>在移动设备上音频处理，首要的就是输入和输出，iOS通过CoreAudio系列提供了多种播放和录制甚至是格式转换功能。</p>
+							<pre><a href="https://www.gitbook.com/book/cz-it/play-and-record-with-coreaudio/details">GitBook</a> | <a href="">PDF</a> | <a href="">EPub</a></pre>
+						<br />	
+
+						<h2 id="touch">《Step in Runtime》</h2>			
+						<p>runtime作为OC的基础，有可以直接使用的API，同时其源码也是对基础学习的完美资料，如何"step"去了解代码？</p>
+						<pre><a href="https://www.gitbook.com/book/cz-it/step_in_runtime/details">GitBook</a> | <a href="">PDF</a> | <a href="">EPub</a></pre>
+						<br/>
+
+						<h2 id="touch">《iOS Animations by Tutorials》</h2>
+						<p>《iOS Animations by Tutorials》是最近一个从简入繁的介绍动画的书，采用Swift作为表达语言，在学习的过程中将其翻译成中文版本</p>
+						<pre><a href="https://www.gitbook.com/book/cz-it/ios_animations_by_tutorials_zh_cn/details">GitBook</a> | <a href="">PDF</a> | <a href="">EPub</a></pre>
+						<br />				
+					</div>
+		</div>
+
+		<div id="download" class="wrap footer">
+			<p><a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />本站采用<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">知识共享Attribution-NoDerivatives 4.0 国际许可协议</a>进行许可。</p>
+		</div>
+
+
+		<script src="http://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+
+		<script src="./js/jquery.event.move.js"></script>
+		<script src="./js/jquery.event.swipe.js"></script>
+
+		<script src="./js/unslider.min.js"></script>
+		<script>
+			if(window.chrome) {
+				$('.banner li').css('background-size', '100% 100%');
+			}
+
+			$('.banner').unslider({
+				arrows: true,
+				fluid: true,
+				dots: true
+			});
+
+			//  Find any element starting with a # in the URL
+			//  And listen to any click events it fires
+			$('a[href^="#"]').click(function() {
+				//  Find the target element
+				var target = $($(this).attr('href'));
+
+				//  And get its position
+				var pos = target.offset(); // fallback to scrolling to top || {left: 0, top: 0};
+
+				//  jQuery will return false if there's no element
+				//  and your code will throw errors if it tries to do .offset().left;
+				if(pos) {
+					//  Scroll the page
+					$('html, body').animate({
+						scrollTop: pos.top,
+						scrollLeft: pos.left
+					}, 1000);
+				}
+
+				//  Don't let them visit the url, we'll scroll you there
+				return false;
+			});
+
+			
+		</script>
+	</body>
+</html>
