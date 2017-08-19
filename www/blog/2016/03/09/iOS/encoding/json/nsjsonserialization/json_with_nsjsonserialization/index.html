@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>用NSJSONSerialization让JSON变服帖 | 双能卫</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前的文章使用Ono读取XML文件/简书介绍了如何处理XML数据，随着Web时代的ajax的盛行，在App时代，另一个最常需要处理的的数据就是JSON数据，尤其现在的Restful背景下API数据的传递，更有胜者直接就是JSON RPC。此时既要读取解析JSON也要为数据结构生成对应的JSON数据。在以前，iOS/Mac平台有多钟JSON解决方案，如SBJSON、TouchJSON、YAJL、JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用NSJSONSerialization让JSON变服帖">
+<meta property="og:url" content="http://www.libcz.com/blog/2016/03/09/iOS/encoding/json/nsjsonserialization/json_with_nsjsonserialization/index.html">
+<meta property="og:site_name" content="双能卫">
+<meta property="og:description" content="之前的文章使用Ono读取XML文件/简书介绍了如何处理XML数据，随着Web时代的ajax的盛行，在App时代，另一个最常需要处理的的数据就是JSON数据，尤其现在的Restful背景下API数据的传递，更有胜者直接就是JSON RPC。此时既要读取解析JSON也要为数据结构生成对应的JSON数据。在以前，iOS/Mac平台有多钟JSON解决方案，如SBJSON、TouchJSON、YAJL、JS">
+<meta property="og:updated_time" content="2016-05-11T16:25:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用NSJSONSerialization让JSON变服帖">
+<meta name="twitter:description" content="之前的文章使用Ono读取XML文件/简书介绍了如何处理XML数据，随着Web时代的ajax的盛行，在App时代，另一个最常需要处理的的数据就是JSON数据，尤其现在的Restful背景下API数据的传递，更有胜者直接就是JSON RPC。此时既要读取解析JSON也要为数据结构生成对应的JSON数据。在以前，iOS/Mac平台有多钟JSON解决方案，如SBJSON、TouchJSON、YAJL、JS">
+  
+    <link rel="alternative" href="/blog/atom.xml" title="双能卫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://images.libcz.com:8000/images/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/blog" class="profilepic">
+			
+			<img lazy-src="http://images.libcz.com:8000/images/white_bg_logo.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/blog">C Z</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">双能卫</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/blog/">主页</a></li>
+				        
+							<li><a href="/blog/archives">所有文章</a></li>
+				        
+							<li><a href="http://www.libcz.com/about.html">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="jianshu_ios" target="_blank" href="http://www.jianshu.com/users/b8b64af5b6f9/timeline" title="jianshu_ios">jianshu_ios</a>
+					        
+								<a class="github" target="_blank" href="http://github.com/cz-it" title="github">github</a>
+					        
+								<a class="jianshu_golang" target="_blank" href="http://www.jianshu.com/users/86f2f6a5968e/timeline" title="jianshu_golang">jianshu_golang</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/blog/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/blog/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/NSJSONSerialization/" style="font-size: 10px;">NSJSONSerialization</a> <a href="/blog/tags/Ono/" style="font-size: 10px;">Ono</a> <a href="/blog/tags/Realm/" style="font-size: 10px;">Realm</a> <a href="/blog/tags/Reaml/" style="font-size: 13.33px;">Reaml</a> <a href="/blog/tags/ReplayKit/" style="font-size: 10px;">ReplayKit</a> <a href="/blog/tags/UIStackView/" style="font-size: 10px;">UIStackView</a> <a href="/blog/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/blog/tags/autolayout/" style="font-size: 10px;">autolayout</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 16.67px;">golang</a> <a href="/blog/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/blog/tags/masonry/" style="font-size: 10px;">masonry</a> <a href="/blog/tags/navigation/" style="font-size: 10px;">navigation</a> <a href="/blog/tags/swift/" style="font-size: 10px;">swift</a> <a href="/blog/tags/tabbar/" style="font-size: 10px;">tabbar</a> <a href="/blog/tags/xml/" style="font-size: 10px;">xml</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">C Z</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://images.libcz.com:8000/images/white_bg_logo.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">C Z</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">双能卫</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/blog/">主页</a></li>
+		        
+					<li><a href="/blog/archives">所有文章</a></li>
+		        
+					<li><a href="http://www.libcz.com/about.html">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="jianshu_ios" target="_blank" href="http://www.jianshu.com/users/b8b64af5b6f9/timeline" title="jianshu_ios">jianshu_ios</a>
+			        
+						<a class="github" target="_blank" href="http://github.com/cz-it" title="github">github</a>
+			        
+						<a class="jianshu_golang" target="_blank" href="http://www.jianshu.com/users/86f2f6a5968e/timeline" title="jianshu_golang">jianshu_golang</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS/encoding/json/nsjsonserialization/json_with_nsjsonserialization" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/blog/2016/03/09/iOS/encoding/json/nsjsonserialization/json_with_nsjsonserialization/" class="article-date">
+  	<time datetime="2016-03-08T16:00:00.000Z" itemprop="datePublished">2016-03-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      用NSJSONSerialization让JSON变服帖
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/JSON/">JSON</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/NSJSONSerialization/">NSJSONSerialization</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前的文章<a href="http://www.libcz.com/blog/2016/03/08/iOS/xml/Ono/use_ono_to_read_xml/#more">使用Ono读取XML文件</a>/<a href="http://www.jianshu.com/p/92d8d109bfc8" target="_blank" rel="external">简书</a>介绍了如何处理XML数据，随着Web时代的ajax的盛行，在App时代，另一个最常需要处理的的数据就是JSON数据，尤其现在的Restful背景下API数据的传递，更有胜者直接就是JSON RPC。此时既要读取解析JSON也要为数据结构生成对应的JSON数据。在以前，iOS/Mac平台有多钟JSON解决方案，如SBJSON、TouchJSON、YAJL、JSONKit，当然还有C里面的cJSON/RapidJSON可以进行封装，效率和正确率也是刚刚的。Apple自家也提供了一套解决方案：NSJSONSerialization，这个NSJSONSerialization比他们自家的XML解析工具NSXMLParser可好多了，他既有可人的接口，又提供了非凡的效率（有<a href="http://arthurchen.blog.51cto.com/2483760/723910" target="_blank" rel="external">测评表明比SBJSON/JSONKit等强</a>），并且是Apple系统提供的正规军，因此首推这个方案。</p>
+<p>NSJSONSerialization提供的接口非常简单，甚至于<a href="https://developer.apple.com/library/ios/documentation/Foundation/Reference/NSJSONSerialization_Class/index.html" target="_blank" rel="external">官网的Manual</a>只有少量的文字描述。</p>
+<blockquote>
+<p>You use the NSJSONSerialization class to convert JSON to Foundation objects and convert Foundation objects to JSON</p>
+</blockquote>
+<p>可见，NSJSONSerialization是可以直接将JSON数据转换成Foundation中提供的对象如NSArray、NSDictionary、NSString、NSNumber等；也可以直接把这些Foundation的对象转换成JSON数据，这一看就是个超人性的接口。<br><a id="more"></a><br>但是这么好的接口也有些限制，他要求被解析的JSON数据必须是</p>
+<ul>
+<li>顶级对象需要是一个{}表示的字典或者[]表示的数组，因此也只能对NSArray/NSDictionary做序列化。（这点感觉基本都是这么用的）</li>
+<li>所有的节点数据必须要能被解析成 NSString, NSNumber, NSArray, NSDictionary 或者 NSNull.反之也只能对这些对象做序列化。</li>
+<li>字典的Key必须是NSString表达的类型。</li>
+<li>数字类型的数不能是NaN或者无限大。</li>
+</ul>
+<p>总结来看其实只要我们：<br>在序列化的时候，只要是对NSArray或者NSDictionary对象序列化，并且其单元组成只能是 NSString, NSNumber(NaN/无限大不可以), NSArray, NSDictionary（key必须是NSString） 或者 NSNull即可。也可以通过</p>
+<pre><code>+ (BOOL)isValidJSONObject:(id)obj
+</code></pre><p>这个类方法来判断其是否可以被正确序列化。</p>
+<p>##1. 解析JSON数据到Foundation对象<br>NSJSONSerialization提供了两个方法来解析JSON数据，一个是从NSData里面取数据，另一个是从NSInputStream 输入流中取数据，从而方便对File/Sokcet的操作。数据的格式必须是UTF-8, UTF-16LE, UTF-16BE, UTF-32LE, UTF-32BE中的一种，是否带有BOM都可以。</p>
+<pre><code>+ (nullable id)JSONObjectWithData:(NSData *)data options:(NSJSONReadingOptions)opt error:(NSError **)error;
+
++ (nullable id)JSONObjectWithStream:(NSInputStream *)stream options:(NSJSONReadingOptions)opt error:(NSError **)error;
+</code></pre><p>两个函数不同的地方就是第一个参数，一个传入的是NSData一个传入的是NSInputStream.</p>
+<p>options参数控制读入的策略:</p>
+<ul>
+<li>NSJSONReadingMutableContainers : 读出来的对象放入到NSMutableArray或者NSMutableDictionary中，默认是放到NSArray/NSDictionary中。这个选项在我们读取一段JSON然后进行追加或者删除节点的时候，非常适合，修改下Array或者Dictionary成员，然后在序列化就可以了。</li>
+<li>NSJSONReadingMutableLeaves： 读出来的每个节点对象的String放入到NSMutableString中，这样就为修改节点提供了可能，在读入后修改节点再序列化回去的场景比较适用。</li>
+<li>NSJSONReadingAllowFragments ： 正常情况JSON的顶级节点要么是Array[]要么是Dictionary{}。如果JSON数据不是通过{}/[]表示的dictionary或者array的片段数据，这用这个选项进行指定。</li>
+</ul>
+<p>error参数是Cocoa API常用的出错方式，传入一个NSError **，如果出错，通过这个值返回回来。<br>解析回来以后就可以按照NSArray或者NSDictionary的方式进行使用了，特别方便。比如：</p>
+<pre><code>{
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;hanmeimei&quot;,
+    &quot;class&quot;: [
+        &quot;English&quot;,
+        &quot;Mathematics&quot;
+    ]
+}
+</code></pre><p>相当于：</p>
+<pre><code>NSArray *myClass = @[@&quot;English&quot;,@&quot;Mathematics&quot;];
+NSDictionary *student = @{@&quot;id&quot;:@1, @&quot;name&quot;:@&quot;hmeimei&quot;, @&quot;class&quot;: myClass};
+</code></pre><p>解析出来就是一个 student.</p>
+<p>##2. 将Foundation对象序列化到JSON中<br>与上面对应的NSJSONSerialization也提供了两个将对象序列化到JSON的接口，一个是序列化到NSData中，一个是序列化到NSOutputStream中，方便对File/Socket的操作，序列化的结果是UTF-8格式编码数据。</p>
+<pre><code>+ (nullable NSData *)dataWithJSONObject:(id)obj options:(NSJSONWritingOptions)opt error:(NSError **)error;
+
++ (NSInteger)writeJSONObject:(id)obj toStream:(NSOutputStream *)stream options:(NSJSONWritingOptions)opt error:(NSError **)error;
+</code></pre><p>两个函数不同的地方就是第一个参数，一个传入的是NSData一个传入的是NSOutputStream.</p>
+<p>默认情况下，生成的JSON是尽量压缩后的结果，去掉了不必要的空格，可读性比较差。如果希望生成可读性较好的格式，比如在调试的阶段，可以使用<code>NSJSONWritingPrettyPrinted</code> 的option参数为输出的格式加上必要空格，进行格式化。</p>
+<p>同样，如果序列化过程中出错，通过error参数进行返回。在进行序列化的时候可以使用</p>
+<pre><code>+ (BOOL)isValidJSONObject:(id)obj;
+</code></pre><p>判断是否可以正常序列化。</p>
+<p>比如上面的对student执行序列化话，就可以得到上面的JSON数据。</p>
+<p>##3. 一个示例<br>最后通过一个示例程序看下基本的调用流程。</p>
+<p>JSON文件为students.json:</p>
+<pre><code>[
+    {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;hanmeimei&quot;,
+        &quot;class&quot;: [
+            &quot;English&quot;,
+            &quot;Mathematics&quot;
+        ]
+    },
+    {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;lilei&quot;,
+        &quot;class&quot;: [
+            &quot;English&quot;,
+            &quot;Mathematics&quot;
+        ]
+    }
+]
+</code></pre><p>程序主要代码：</p>
+<pre><code>NSInputStream *ifs = [[NSInputStream alloc] initWithFileAtPath:@&quot;your_file_path/students.json&quot;];
+if (nil == ifs) {
+    NSLog(@&quot;ifs is nil&quot;);
+    return -1;
+}
+[ifs open];
+NSError *error = nil;
+NSMutableArray *students = [NSJSONSerialization JSONObjectWithStream:ifs options:NSJSONReadingMutableContainers error:&amp;error];
+if (nil != error) {
+    NSLog(@&quot;Unparse JSON Error&quot;);
+}
+for (NSDictionary *student in students) {
+    NSLog(@&quot;student: %@&quot;, [student objectForKey:@&quot;name&quot;]);
+    NSLog(@&quot;    select class:&quot;);
+    for (NSString *cls in [student objectForKey:@&quot;class&quot;]) {
+        NSLog(@&quot;        %@\n&quot;, cls);
+    }
+}
+
+// Parse To
+NSDictionary *xiaowang =@{@&quot;id&quot;:@3, @&quot;name&quot;:@&quot;xiaowang&quot;, @&quot;class&quot;: @[@&quot;none&quot;]};
+[students addObject:xiaowang];
+error = nil;
+NSData *jsonBuf  = [NSJSONSerialization dataWithJSONObject:students options:NSJSONWritingPrettyPrinted error:&amp;error];
+NSString *jsonStr = [[NSString alloc] initWithData:jsonBuf encoding:NSUTF8StringEncoding];
+NSLog(@&quot;JSON is %@&quot;, jsonStr);
+</code></pre><p>输出为：</p>
+<pre><code>student: hanmeimei
+    select class:
+         English
+         Mathematics
+student: lilei
+    select class:
+           English
+           Mathematics
+JSON is [
+  {
+&quot;id&quot; : 1,
+&quot;name&quot; : &quot;hanmeimei&quot;,
+&quot;class&quot; : [
+  &quot;English&quot;,
+  &quot;Mathematics&quot;
+]
+  },
+  {
+    &quot;id&quot; : 2,
+    &quot;name&quot; : &quot;lilei&quot;,
+    &quot;class&quot; : [
+      &quot;English&quot;,
+      &quot;Mathematics&quot;
+    ]
+  },
+  {
+    &quot;id&quot; : 3,
+    &quot;name&quot; : &quot;xiaowang&quot;,
+    &quot;class&quot; : [
+      &quot;none&quot;
+    ]
+  }
+]
+</code></pre><p>可以看到加空格的格式化效果还是比较明显的。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2016/03/10/golang/grpc/have_a_try_on_grpc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          gRPC初体验
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2016/03/04/iOS/encoding/xml/Ono/use_ono_to_read_xml/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">使用Ono读取XML文件</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'libcz'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <p><a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />本站采用<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">知识共享Attribution-NoDerivatives 4.0 国际许可协议</a>进行许可。</p>
+    	<div class="footer-left">
+    		&copy; 2016 C Z
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/blog/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
