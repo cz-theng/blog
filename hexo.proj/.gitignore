@@ -8,3 +8,5 @@ public/
 package-lock.json
 package.json
 scaffolds
+.npmignore
+themes/landscape
