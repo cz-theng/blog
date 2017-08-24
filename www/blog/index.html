@@ -15,7 +15,7 @@
     <link rel="alternative" href="/blog/atom.xml" title="双能卫" type="application/atom+xml">
   
   
-    <link rel="icon" href="http://images.libcz.com:8000/images/favicon.png">
+    <link rel="icon" href="http://www.libcz.com/images/favicon.png">
   
   <link rel="stylesheet" href="/blog/css/style.css">
 </head>
@@ -27,7 +27,7 @@
 	<header id="header" class="inner">
 		<a href="/blog" class="profilepic">
 			
-			<img lazy-src="http://images.libcz.com:8000/images/white_bg_logo.png" class="js-avatar">
+			<img lazy-src="http://www.libcz.com/images/white_bg_logo.png" class="js-avatar">
 			
 		</a>
 
@@ -92,12 +92,18 @@
 					        
 						</div>
 					</nav>
+
+					<nav class="header-nav">
+						<div class="qr_mp " style="height:228px;background: url(http://www.libcz.com/images/qr_mp.png);background-size:100%">
+		
+						</div>
+					</nav>
 				</section>
 				
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/blog/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/blog/tags/JSON/" style="font-size: 10px;">JSON</a> <a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/NSJSONSerialization/" style="font-size: 10px;">NSJSONSerialization</a> <a href="/blog/tags/Ono/" style="font-size: 10px;">Ono</a> <a href="/blog/tags/Realm/" style="font-size: 10px;">Realm</a> <a href="/blog/tags/Reaml/" style="font-size: 13.33px;">Reaml</a> <a href="/blog/tags/ReplayKit/" style="font-size: 10px;">ReplayKit</a> <a href="/blog/tags/UIStackView/" style="font-size: 10px;">UIStackView</a> <a href="/blog/tags/Xcode/" style="font-size: 10px;">Xcode</a> <a href="/blog/tags/autolayout/" style="font-size: 10px;">autolayout</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 16.67px;">golang</a> <a href="/blog/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/blog/tags/masonry/" style="font-size: 10px;">masonry</a> <a href="/blog/tags/navigation/" style="font-size: 10px;">navigation</a> <a href="/blog/tags/swift/" style="font-size: 10px;">swift</a> <a href="/blog/tags/tabbar/" style="font-size: 10px;">tabbar</a> <a href="/blog/tags/xml/" style="font-size: 10px;">xml</a>
+						<a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 20px;">golang</a> <a href="/blog/tags/gomock/" style="font-size: 10px;">gomock</a>
 					</div>
 				</section>
 				
@@ -119,7 +125,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img lazy-src="http://images.libcz.com:8000/images/white_bg_logo.png" class="js-avatar">
+				<img lazy-src="http://www.libcz.com/images/white_bg_logo.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author">C Z</h1>
@@ -155,11 +161,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-iOS/replay/broadcast/live_with_replaykit" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-golang/testing/gomock/test_with_gomock" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/blog/2016/10/14/iOS/replay/broadcast/live_with_replaykit/" class="article-date">
-  	<time datetime="2016-10-13T16:00:00.000Z" itemprop="datePublished">2016-10-14</time>
+      <a href="/blog/2017/08/20/golang/testing/gomock/test_with_gomock/" class="article-date">
+  	<time datetime="2017-08-19T16:00:00.000Z" itemprop="datePublished">2017-08-20</time>
 </a>
     </div>
   
@@ -172,7 +178,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/10/14/iOS/replay/broadcast/live_with_replaykit/">通过ReplayKit在触手、映客、企鹅电竞上直播游戏界面</a>
+      <a class="article-title" href="/blog/2017/08/20/golang/testing/gomock/test_with_gomock/">使用Golang的官方mock工具--gomock</a>
     </h1>
   
 
@@ -181,265 +187,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在去年（2015）的WWDC Apple分享了主题<a href="https://developer.apple.com/videos/play/wwdc2015/605/">《Going Social with ReplayKit and Game Center》</a>。该Session展示了Apple在iOS9上面引入了一个全新的framework来提供录屏功能，这样游戏用户就可以通过这个功能将自己玩的内容进行录制并分享了，但是实际使用起来，这个工具却有诸多弊端，比如内容要自己编辑、需要自己保存等。发布一年多来，使用的人甚少，至少在腾讯、网易这些手游大拿的游戏上面都没有看到该录制功能。</p>
-<p>所以在今年（2016）的WWDC上面，Apple又展开了一个新的Session <a href="https://developer.apple.com/videos/play/wwdc2016/601/">《Go Live with ReplayKit》</a>,扩展了ReplayKit使其支持录屏直播的功能。简单描述就是可以将玩家的屏幕进行录屏并可以将录制的实时流取出来传递到网络上面进行广播。想想近年来火热的游戏直播，是不是很兴奋。Aplle更变（gei）态(li)的是，在直播屏幕的同时还可以录制摄像头，这简直是给美女游戏直播撤掉了蒙羞布啊。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/ReplayKit/">ReplayKit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/blog/2016/10/14/iOS/replay/broadcast/live_with_replaykit/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-iOS/packagemgr/cocoapods/use_cocoapods_as_pkgmgr" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/blog/2016/07/19/iOS/packagemgr/cocoapods/use_cocoapods_as_pkgmgr/" class="article-date">
-  	<time datetime="2016-07-18T16:00:00.000Z" itemprop="datePublished">2016-07-19</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/07/19/iOS/packagemgr/cocoapods/use_cocoapods_as_pkgmgr/">中心化的包管理器：CocoaPods</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在安装Linux软件时，我们是不是经常会遇到这样的问题：好不容下载了automake的源码包，结果./configure 时候提示先装autoconf，然后下载了个autoconf的源码，安装好后<br>发现automake的configure提示说autoconf的版本不对。</p>
-<p>这一百个闹心的事，在后来的90后世界时很少出现了，因为现在的在Linux发行版引入了包管理系统来解决这个问题。目前有两大系列（当然还有其他系列），一个是Redhat主导的yum<br>命令的rmp软件包系列（Fedora/Redhat/CentOS），另一个是Debine引入的apt-xxx系列的deb包(Debine/Ubuntu)。这些包管理系统做的事情是主要为了解决软件安装过程的<br>依赖关系。比如安装A的1.9.1版本，需要先安装B的1.3.1以上版本，以及C的1.4.2以上版本。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/CocoaPods/">CocoaPods</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/blog/2016/07/19/iOS/packagemgr/cocoapods/use_cocoapods_as_pkgmgr/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-iOS/db/realm/advanced_realm/advanced_realm" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/blog/2016/07/14/iOS/db/realm/advanced_realm/advanced_realm/" class="article-date">
-  	<time datetime="2016-07-13T16:00:00.000Z" itemprop="datePublished">2016-07-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/07/14/iOS/db/realm/advanced_realm/advanced_realm/">进阶Realm</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在前面的篇章<a href="http://www.jianshu.com/p/8a9fb7a74ff1">《Realm的CRUD》</a>介绍了怎么最简单的把Realm给用起来，并通过一个Demo演示了CRUD的操作。除此之外Realm还提供了诸如消息通知、调试、数据加密等功能，我们一一来看。</p>
-<h2 id="0-数据库realm设置"><a href="#0-数据库realm设置" class="headerlink" title="0. 数据库realm设置"></a>0. 数据库realm设置</h2><p>使用Realm首当其冲的就是要创建一个realm数据库对象（后面泛指Realm的时候R大写，而指一个Realm数据库对象的时候则用realm小写的r）。最简单的方法就是获取默认的Realm对象：</p>
-<pre><code>+ (nonnull instancetype)defaultRealm;
-</code></pre><p>后面调用RLMObject的<code>+ (nonnull RLMResults *)allObjects;</code>以及<code>+ (nonnull RLMResults *)objectsWhere:(nonnull NSString *)predicateFormat, ...;</code>就都是对这个默认的数据库对象realm的操作。其文件存储位置也是固定的。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Reaml/">Reaml</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/blog/2016/07/14/iOS/db/realm/advanced_realm/advanced_realm/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-iOS/db/realm/crud/crud" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/blog/2016/07/12/iOS/db/realm/crud/crud/" class="article-date">
-  	<time datetime="2016-07-11T16:00:00.000Z" itemprop="datePublished">2016-07-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/07/12/iOS/db/realm/crud/crud/">Realm的CRUD</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在前一篇文章<a href="http://www.jianshu.com/p/6a58b8a6229a">《尝鲜Realm》</a>,我们了解到Realm标榜其为专注于移动平台的数据库，那既然是数据库，我们当然要看最基本的CRUD(Create/Read/Update/Delete)操作。当然在做这些基本的操作之前还是需要学习下Realm的基本知识。</p>
-<h2 id="0-Realm与我们熟悉的SQL"><a href="#0-Realm与我们熟悉的SQL" class="headerlink" title="0. Realm与我们熟悉的SQL"></a>0. Realm与我们熟悉的SQL</h2><p>当使用SQL（SQLite）时，首先我们会设计关系数据库的结构，比如设计几个表，每个表里面哪些是主键、对哪些键做索引、默认值是什么等等，并将这些用SQL表示好，然后调用函数执行创建表的SQL语句或者通过一些ORM工具如：FMDB的函数创建表格，然后还要对应的创建一个class/struct来表示这个数据结构。而Realm抛弃了这繁琐的中间语言，而采用目标语言（比如Objective-C/Swift/Java）本身作为DSL(domain-specific language)来描述同样的类似表格的数据结构，由于是目标语言，其自身就能表达一个数据结构，因此带有了一些Model层属性，比如SQL很难描述某列的属性是另一个结构，需要自己定义数据结构来表示，而Realm的DSL则自动包含了这层定义。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Realm/">Realm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/blog/2016/07/12/iOS/db/realm/crud/crud/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-iOS/db/realm/first_blood/first_blood" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/blog/2016/07/08/iOS/db/realm/first_blood/first_blood/" class="article-date">
-  	<time datetime="2016-07-07T16:00:00.000Z" itemprop="datePublished">2016-07-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/07/08/iOS/db/realm/first_blood/first_blood/">尝鲜Realm</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>25 May 2016 : 13,949 Commits and 6,148 Closed Issues Later: Thank You for Helping Realm Reach 1.0</p>
+        <p>在Golang的官方Repo(<a href="https://github.com/golang/)中有一个单独的工程叫&quot;mock&quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。" target="_blank" rel="external">https://github.com/golang/)中有一个单独的工程叫&quot;mock&quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。</a></p>
+<p>不同场景mock的对象互相不同，那么gomock主要是mock哪些内容呢？</p>
+<blockquote>
+<p>mockgen has two modes of operation: source and reflect. Source mode generates mock interfaces from a source file.<br>Reflect mode generates mock interfaces by building a program that uses reflection to understand interfaces.</p>
 </blockquote>
-<p>从2014年6月宣布“the first mobile-first database.” 开始，到2016年5月，历经2年淬炼的Realm终于发布了1.0版本，根据Realm官方的说法，这两年他们和社区一共做了13，949次提交、关闭了6，148个Issues，收获了12,000 个github star,并被上十亿（billion）的App用户启动，被数十万活跃的开发人员使用，而且这其中不乏超级大公司如Twitter、Alibaba、eBay之流。</p>
-<p>所以，这么漂亮的数据，你怎么能不去尝试下呢？</p>
+<p>通过gomock的辅助工具我们知道，gomock主要是针对我们go代码中的接口进行mock的。</p>
       
     </div>
     
@@ -447,18 +200,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Reaml/">Reaml</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/gomock/">gomock</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/blog/2016/07/08/iOS/db/realm/first_blood/first_blood/#more">more >></a>
+          <a  href="/blog/2017/08/20/golang/testing/gomock/test_with_gomock/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -475,11 +228,11 @@
 
 
   
-    <article id="post-iOS/ui/uistackview/accept_new_uistackview" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-golang/nats/have_a_try_with_gnatcd" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/blog/2016/05/18/iOS/ui/uistackview/accept_new_uistackview/" class="article-date">
-  	<time datetime="2016-05-17T16:00:00.000Z" itemprop="datePublished">2016-05-18</time>
+      <a href="/blog/2016/04/10/golang/nats/have_a_try_with_gnatcd/" class="article-date">
+  	<time datetime="2016-04-09T16:00:00.000Z" itemprop="datePublished">2016-04-10</time>
 </a>
     </div>
   
@@ -492,7 +245,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/05/18/iOS/ui/uistackview/accept_new_uistackview/">接受新时代的UIStackView</a>
+      <a class="article-title" href="/blog/2016/04/10/golang/nats/have_a_try_with_gnatcd/">NATS之gnatcd初体验</a>
     </h1>
   
 
@@ -501,10 +254,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>距离iOS9发布已经接近一年了，我们即将引来新的iOS 10,为何在这个时候来介绍iOS9中新引入的一个布局组件呢？犹如当年的AutoLayout刚推出来一样，一来文档少、二来操作繁琐，最重要的要是兼容之前的系统，用新技术撸一边等于是多做工。如今在LinkdedIn已经要求从iOS8开始的时代（QQ/微信/微博/淘宝均要求&gt;=iOS7），可以预见iOS10发布后不久的将来iOS9也将成为最低要求，其带来的一些高效率工具（比如这里要介绍的UIStackView）也必将成为主流。</p>
-<p>如果有Android相关开发经验，或者从Android开发转到iOS开发，会发现Android4就引入的可以解决多屏幕适配Linerlayout/RelativeLayout在iOS中找不到对应的工具，而在iOS9中，Apple就为我们添加了这样的一个工具，它就是UIStackView。首先不要被名字所迷惑，以为是和UICollectionView、UITableView一样一般作为最外层的容器View，虽然他也确实就是个容器View。其实用一句话就可以概况它的本质：“自动对一组横向或竖向view集布局的容器view”。如果熟悉HTML的话，可以类比”<div />“ 不带block熟悉的就是横向布局，带block组合的就是竖向布局。</p>
-<p>UIStackView内部是为其托管的子View添加Autolayout来实现其自动布局的，所以要想更熟练的使用UIStackView，最好能对AutoLayout有一定的理解，当然，如果对AutoLayout还不太熟悉，也没有关系，UIStackView的目的就是为使用者封装这些复制的约束关系而存在的，只要看下面文章，相信也能将UIStackView这一高效率组件运用到自己的工程中。</p>
-<p>和UICollectionView、UITableView不一样的是，UIStackView没有继承与UIScrollview而是直接继承与UIView，所以对于超出屏幕的内容，还需要自己用UIScrollView进行交互布局。虽然UIStackView是继承与UIView，但是却没有继承UIView的渲染功能，所以UIStackView是没有UI的，也就是不显示本身的。所以类似“backgroundColor”的界面属性就无效了，同时重写 <code>layerClass</code>, <code>drawRect:</code>甚至<code>drawLayer:inContext:</code>都是无效的。UIStackView是一个纯粹的容器View。<br>
+        <p>现在Message Queue有多种选择，比如Java的Kafaka/ActiveMQ、Erlang的RabbitMQ、Golang的NSQ以及这里要说的gnatcd。</p>
+<h2 id="1-NATS与gnatcd"><a href="#1-NATS与gnatcd" class="headerlink" title="1. NATS与gnatcd"></a>1. NATS与gnatcd</h2><blockquote>
+<p>NATS is Open Source. Performant. Simple. Scalable.A central nervous system for modern, reliable and scalable cloud and distributed systems.<br>                                                 –<a href="http://nats.io/" target="_blank" rel="external">http://nats.io/</a></p>
+</blockquote>
+<p>按照其官网的说法，NATS是一个开源的、高性能的、简洁的、灵活的 适用于现代的可靠灵活的云和分布式系统的中枢系统。 说的很玄乎，实际上就是一个分布式<br>的消息队列系统，支持PubSub/ReqRsp 模型。其最初由Apcera领导开发，并实现了Ruby版本的服务器和客户端，其主要作者<a href="https://github.com/derekcollison" target="_blank" rel="external">Derek Collison</a>自称做了20多年的MQ，并经历过TIBOC、Rendezvous、EMC公司，这里有<a href="https://www.reddit.com/r/golang/comments/1oqqx7/gnatsd_from_apcera_a_high_performance_nats_server/" target="_blank" rel="external">他自己的reddit回答</a>。</p>
+<p>根据<a href="https://github.com/nats-io" target="_blank" rel="external">github</a>里面<a href="https://github.com/nats-io/ruby-nats" target="_blank" rel="external">ruby-nats</a>的日志显示在11年Derek实现了Ruby版本<br>的NATS服务器以及对应的客户端。然后在12年末，Derek又用Golang将服务器重写了一遍，并最终发现其效果更好，于是现在慢慢将Ruby版本的服务器淘汰了，现在<br>官网也只维护一个Golang版本的服务器，也就是我们这里的gnatcd。</p>
+<blockquote>
+<p>NATS provides a lightweight server that is written in the Go programming language. Apcera actively maintains and supports the NATS server source code, binary distributions, and Docker image.<br>                                            – <a href="http://nats.io/documentation/" target="_blank" rel="external">http://nats.io/documentation/</a></p>
+</blockquote>
+<p>gnatcd根据NATS说法，会由Apcera维护，并提供源码、二进制文件以及Docker镜像文件。</p>
       
     </div>
     
@@ -512,18 +271,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/UIStackView/">UIStackView</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/NATS/">NATS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/gnatsd/">gnatsd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/blog/2016/05/18/iOS/ui/uistackview/accept_new_uistackview/#more">more >></a>
+          <a  href="/blog/2016/04/10/golang/nats/have_a_try_with_gnatcd/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -540,11 +299,11 @@
 
 
   
-    <article id="post-iOS/xcode/custom_template/custom_projtpl_filetpl" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-golang/grpc/have_a_try_on_grpc" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/blog/2016/05/12/iOS/xcode/custom_template/custom_projtpl_filetpl/" class="article-date">
-  	<time datetime="2016-05-11T16:00:00.000Z" itemprop="datePublished">2016-05-12</time>
+      <a href="/blog/2016/03/10/golang/grpc/have_a_try_on_grpc/" class="article-date">
+  	<time datetime="2016-03-09T16:00:00.000Z" itemprop="datePublished">2016-03-10</time>
 </a>
     </div>
   
@@ -557,7 +316,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/blog/2016/05/12/iOS/xcode/custom_template/custom_projtpl_filetpl/">定制你的Xcode工程目录和文件模板</a>
+      <a class="article-title" href="/blog/2016/03/10/golang/grpc/have_a_try_on_grpc/">gRPC初体验</a>
     </h1>
   
 
@@ -566,11 +325,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在创建Xcode工程的时候，有几个默认的模板可以选择，比如“Application”里面“Signal View Application”，或者是一个“Framework &amp; Library”里面的”CocoaTouch Framework”。这些模板点击进去后就为我们自动生成了一些文件，并且文件中也有些模板注释。但是这样就够了么？Apple的设定是否能满足你的需求呢？</p>
-<p>先来看下我的定制效果：</p>
-<p>当在Xcode里面点击”File”-&gt;”New” -&gt; “Project”的时候，首先得到工程模板的选择，这里我自定义了一个自己的“Application”模板</p>
-<p><img src="http://images.libcz.com:8000/images/blog/iOS/xcode/custom_template/images/proj_tpl_choice.png" alt="proj_tpl_choice"></p>
-<p>也就是这里的“CZ’s Application”，里面有两个模板工程，一个是OC的一个是Swift的，这里我们看选择一个OC工程模板后的结果。</p>
+        <p>gRPC是由Google主导开发的RPC框架，使用HTTP/2协议并用ProtoBuf作为序列化工具。其客户端提供Objective-C、Java接口，服务器侧则有Java、Golang、C++等接口，从而为移动端（iOS/Androi）到服务器端通讯提供了一种解决方案。 当然在当下的环境下，这种解决方案更热门的方式是RESTFull API接口。该方式需要自己去选择编码方式、服务器架构、自己搭建框架（JSON-RPC）。gRPC官方对REST的声音是：</p>
+<ul>
+<li>和REST一样遵循HTTP协议(明确的说是HTTP/2)，但是gRPC提供了全双工流</li>
+<li>和传统的REST不同的是gRPC使用了静态路径，从而提高性能</li>
+<li>用一些格式化的错误码代替了HTTP的状态码更好的标示错误</li>
+</ul>
+<p>至于是否要选择用gRPC。对于已经有一套方案的团队，可以参考下。如果是从头来做，可以考虑下gRPC提供的从客户端到服务器的整套解决方案，这样不用客户端去实现http的请求会话，JSON等的解析，服务器端也有现成的框架用。从15年3月到现在gRPC也发展了一年了，慢慢趋于成熟。下面我们就以gRPC的Golang版本看下其在golang上面的表现。至于服务端的RPC，感觉golang标准库的RPC框架基本够用了,没必要再去用另一套方案。<br>
       
     </div>
     
@@ -578,18 +339,18 @@
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/Xcode/">Xcode</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/iOS/">iOS</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/gRPC/">gRPC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/blog/categories/iOS/">iOS</a>
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
 	</div>
 
 
       
         <p class="article-more-link">
-          <a  href="/blog/2016/05/12/iOS/xcode/custom_template/custom_projtpl_filetpl/#more">more >></a>
+          <a  href="/blog/2016/03/10/golang/grpc/have_a_try_on_grpc/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
@@ -606,10 +367,68 @@
 
 
   
+    <article id="post-golang/standard_library/flag/golang_build_app_with_cli" class="article article-type-post" itemscope itemprop="blogPost">
   
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/blog/page/2/">2</a><a class="page-number" href="/blog/page/3/">3</a><a class="extend next" rel="next" href="/blog/page/2/">Next &raquo;</a>
-    </nav>
+    <div class="article-meta">
+      <a href="/blog/2015/03/05/golang/standard_library/flag/golang_build_app_with_cli/" class="article-date">
+  	<time datetime="2015-03-04T16:00:00.000Z" itemprop="datePublished">2015-03-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2015/03/05/golang/standard_library/flag/golang_build_app_with_cli/">Golang实现命令行菜单CLI效果</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Unix-Like系统中，CLI(Command Line Interface)通常都是通过传统的getopt来实现的，在Python中除了getopt外还有更高级的optparse以及argparse。在Golang中，系统库flag为我们提供了CLI的支持，当然还有一些更高级的封装实现，如<a href="https://github.com/codegangsta/cli" target="_blank" rel="external">codegangsta/cli</a>,<a href="https://github.com/docker/docker/tree/master/pkg/mflag" target="_blank" rel="external">docker增强的flag</a>。但是对于平民百姓的一般使用，用官方的flag库即可。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/cli/">cli</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/blog/2015/03/05/golang/standard_library/flag/golang_build_app_with_cli/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
   
 </div>
       <footer id="footer">
@@ -617,7 +436,7 @@
     <div id="footer-info">
       <p><a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />本站采用<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">知识共享Attribution-NoDerivatives 4.0 国际许可协议</a>进行许可。</p>
     	<div class="footer-left">
-    		&copy; 2016 C Z
+    		&copy; 2017 C Z
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

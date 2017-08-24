@@ -34,10 +34,10 @@ open_in_new: false
 
 # Miscellaneous
 google_analytics: ''
-favicon: http://images.libcz.com:8000/images/favicon.png
+favicon: http://www.libcz.com/images/favicon.png
 
 #你的头像url
-avatar: http://images.libcz.com:8000/images/white_bg_logo.png
+avatar: http://www.libcz.com/images/white_bg_logo.png
 #是否开启分享
 share: true
 #是否开启多说评论，填写你在多说申请的项目名称 duoshuo: duoshuo-key

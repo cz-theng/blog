@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用Golang的官方mock工具--gomock | 双能卫</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在Golang的官方Repo(https://github.com/golang/)中有一个单独的工程叫&amp;quot;mock&amp;quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。 不同场景mock的对象互相不">
+<meta name="keywords" content="golang,gomock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Golang的官方mock工具--gomock">
+<meta property="og:url" content="http://www.libcz.com/blog/2017/08/20/golang/testing/gomock/test_with_gomock/index.html">
+<meta property="og:site_name" content="双能卫">
+<meta property="og:description" content="在Golang的官方Repo(https://github.com/golang/)中有一个单独的工程叫&amp;quot;mock&amp;quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。 不同场景mock的对象互相不">
+<meta property="og:updated_time" content="2017-08-24T03:55:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Golang的官方mock工具--gomock">
+<meta name="twitter:description" content="在Golang的官方Repo(https://github.com/golang/)中有一个单独的工程叫&amp;quot;mock&amp;quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。 不同场景mock的对象互相不">
+  
+    <link rel="alternative" href="/blog/atom.xml" title="双能卫" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://www.libcz.com/images/favicon.png">
+  
+  <link rel="stylesheet" href="/blog/css/style.css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/blog" class="profilepic">
+			
+			<img lazy-src="http://www.libcz.com/images/white_bg_logo.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/blog">C Z</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">双能卫</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/blog/">主页</a></li>
+				        
+							<li><a href="/blog/archives">所有文章</a></li>
+				        
+							<li><a href="http://www.libcz.com/about.html">关于</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="jianshu_ios" target="_blank" href="http://www.jianshu.com/users/b8b64af5b6f9/timeline" title="jianshu_ios">jianshu_ios</a>
+					        
+								<a class="github" target="_blank" href="http://github.com/cz-it" title="github">github</a>
+					        
+								<a class="jianshu_golang" target="_blank" href="http://www.jianshu.com/users/86f2f6a5968e/timeline" title="jianshu_golang">jianshu_golang</a>
+					        
+						</div>
+					</nav>
+
+					<nav class="header-nav">
+						<div class="qr_mp " style="height:228px;background: url(http://www.libcz.com/images/qr_mp.png);background-size:100%">
+		
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 20px;">golang</a> <a href="/blog/tags/gomock/" style="font-size: 10px;">gomock</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">C Z</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://www.libcz.com/images/white_bg_logo.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">C Z</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">双能卫</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/blog/">主页</a></li>
+		        
+					<li><a href="/blog/archives">所有文章</a></li>
+		        
+					<li><a href="http://www.libcz.com/about.html">关于</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="jianshu_ios" target="_blank" href="http://www.jianshu.com/users/b8b64af5b6f9/timeline" title="jianshu_ios">jianshu_ios</a>
+			        
+						<a class="github" target="_blank" href="http://github.com/cz-it" title="github">github</a>
+			        
+						<a class="jianshu_golang" target="_blank" href="http://www.jianshu.com/users/86f2f6a5968e/timeline" title="jianshu_golang">jianshu_golang</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-golang/testing/gomock/test_with_gomock" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/blog/2017/08/20/golang/testing/gomock/test_with_gomock/" class="article-date">
+  	<time datetime="2017-08-19T16:00:00.000Z" itemprop="datePublished">2017-08-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用Golang的官方mock工具--gomock
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/gomock/">gomock</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Golang的官方Repo(<a href="https://github.com/golang/)中有一个单独的工程叫&quot;mock&quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。" target="_blank" rel="external">https://github.com/golang/)中有一个单独的工程叫&quot;mock&quot;(https://github.com/golang/mock),虽然star不是特别多，但它却是Golang官方放出来的mock工具，充这这点我们也需要使用下，虽然并不是官方的就是最好（比如比标准库http更快的fasthttp）。</a></p>
+<p>不同场景mock的对象互相不同，那么gomock主要是mock哪些内容呢？</p>
+<blockquote>
+<p>mockgen has two modes of operation: source and reflect. Source mode generates mock interfaces from a source file.<br>Reflect mode generates mock interfaces by building a program that uses reflection to understand interfaces.</p>
+</blockquote>
+<p>通过gomock的辅助工具我们知道，gomock主要是针对我们go代码中的接口进行mock的。</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>gomock主要包含两个部分：” gomock库”和“ 辅助代码生成工具mockgen”</p>
+<p>他们都可以通过<code>go get</code>来获取：</p>
+<pre><code>go get github.com/golang/mock/gomock
+go get github.com/golang/mock/mockgen
+</code></pre><p>如何你设置过$GOPATH/bin到你的$PATH变量中，那么这里就可以直接运行mockgen命令了，否则需要使用绝对路径或者相当于$GOPATH的目录。</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>gomock的repo中带了一个官方的例子,但是这个例子过于强大和丰富，反而不适合尝鲜，下面我们写个我们自己的例子(<a href="https://www.github.com/cz-it/blog/blog/Go/testing/gomock/example)，一个获取当前Golang最新版本的例子：" target="_blank" rel="external">https://www.github.com/cz-it/blog/blog/Go/testing/gomock/example)，一个获取当前Golang最新版本的例子：</a></p>
+<pre><code>tree .
+.
+├── go_version.go
+├── main.go
+└── spider
+    └── spider.go
+</code></pre><p>目录结构如上。这里spider.go作为接口文件，定义了spider包的接口：</p>
+<pre><code>package spider
+
+type Spider interface {
+    GetBody() string
+}
+</code></pre><p>这里假设接口<code>GetBody</code>直接可以抓取”<a href="https://golang.org&quot;首页的“Build" target="_blank" rel="external">https://golang.org&quot;首页的“Build</a> version”字段来得到当前Golang发布出来的版本。</p>
+<p>这里在go_version.go中对这个接口进行使用：</p>
+<pre><code>import (
+    &quot;github.com/cz-it/blog/blog/Go/testing/gomock/example/spider&quot;
+)
+
+func GetGoVersion(s spider.Spider) string {
+    body := s.GetBody()
+    return body
+}
+</code></pre><p>直接返回表示版本的字符串。正常情况下我们会写出如下的单元测试代码：</p>
+<pre><code>func TestGetGoVersion(t *testing.T) {
+    v := GetGoVersion(spider.CreateGoVersionSpider())
+    if v != &quot;go1.8.3&quot; {
+        t.Error(&quot;Get wrong version %s&quot;, v)
+    }
+}
+</code></pre><p>这里<code>spider.CreateGoVersionSpider()</code>返回一个实现了<code>Spider</code>接口的用来获得Go版本号的爬虫。</p>
+<p>这个单元测试其实既测试了函数GetGoVersion也测试了<code>spider.CreateGoVersionSpider</code>返回的对象。<br>而有时候，我们可能仅仅想测试下<code>GetGoVersion</code>函数，或者我们的<code>spider.CreateGoVersionSpider</code>爬虫实现还没有写好，那该如何是好呢？</p>
+<p>此时Mock工具就显的尤为重要了。</p>
+<p>这里首先用gomock提供的mockgen工具生成要mock的接口的实现：</p>
+<pre><code>mockgen -destination spider/mock_spider.go -package spider github.com/cz-it/blog/blog/Go/testing/gomock/example/spider Spider
+</code></pre><p>这里生成了文件:</p>
+<pre><code>└── spider
+    ├── mock_spider.go
+    └── spider.go
+</code></pre><p>这里注意的是，要预先创建好spider/mocks目录。这样我们的mock代码就生成好了，在”spider/mocks/mock_spider.go”文件中。具体的内容可以先不管。这里先看例子中怎么使用：</p>
+<pre><code>import (
+    &quot;github.com/cz-it/blog/blog/Go/testing/gomock/example/spider&quot;
+    &quot;github.com/golang/mock/gomock&quot;
+    &quot;testing&quot;
+)
+
+func TestGetGoVersion(t *testing.T) {
+    mockCtl := gomock.NewController(t)
+    mockSpider := spider.NewMockSpider(mockCtl)
+    mockSpider.EXPECT().GetBody().Return(&quot;go1.8.3&quot;)
+    goVer := GetGoVersion(mockSpider)
+
+    if goVer != &quot;go1.8.3&quot; {
+        t.Error(&quot;Get wrong version %s&quot;, goVer)
+    }
+}
+</code></pre><p>这里在单元测试中再也不用先去实现一个<code>Spider</code>接口了，而通过gomock为我们直接生成，然后再集成到我们的单元测试里面。可以看到gomock和testing单元测试框架可以紧密的结合起来工作。</p>
+<h2 id="mockgen工具"><a href="#mockgen工具" class="headerlink" title="mockgen工具"></a>mockgen工具</h2><p>在生成mock代码的时候，我们用到了mockgen工具，这个工具是gomock提供的用来为要mock的接口生成实现的。它可以根据给定的接口，来自动生成代码。这里给定接口有两种方式：接口文件和实现文件</p>
+<h3 id="接口文件"><a href="#接口文件" class="headerlink" title="接口文件"></a>接口文件</h3><p>如果有接口文件，则可以通过：</p>
+<ul>
+<li>-source： 指定接口文件</li>
+<li>-destination: 生成的文件名</li>
+<li>-package:生成文件的包名</li>
+<li>-imports: 依赖的需要import的包</li>
+<li>-aux_files:接口文件不止一个文件时附加文件</li>
+<li>-build_flags: 传递给build工具的参数</li>
+</ul>
+<p>比如mock代码使用</p>
+<pre><code>mockgen -destination spider/mock_spider.go -package spider -source spider/spider.go
+</code></pre><p>就是将接口spider/spider.go中的接口做实现并存在 spider/mock_spider.go文件中，文件的包名为”spider”。</p>
+<h3 id="实现文件"><a href="#实现文件" class="headerlink" title="实现文件"></a>实现文件</h3><p>在我们的上面的例子中，并没有使用”-source”,那是如何实现接口的呢？mockgen还支持通过反射的方式来找到对应的接口。只要在所有选项的最后增加一个包名和里面对应的类型就可以了。其他参数和上面的公用。</p>
+<h3 id="通过注释指定mockgen"><a href="#通过注释指定mockgen" class="headerlink" title="通过注释指定mockgen"></a>通过注释指定mockgen</h3><p>如上所述，如果有多个文件，并且分散在不同的位置，那么我们要生成mock文件的时候，需要对每个文件执行多次mockgen命令（假设包名不相同）。这样在真正操作起来的时候非常繁琐，mockgen还提供了一种通过注释生成mock文件的方式，此时需要借助go的”go generate “工具。</p>
+<p>在接口文件的注释里面增加如下：</p>
+<pre><code>//go:generate mockgen -destination mock_spider.go -package spider github.com/cz-it/blog/blog/Go/testing/gomock/example/spider Spider
+</code></pre><p>这样，只要在spider目录下执行</p>
+<pre><code>go generate
+</code></pre><p>命令就可以自动生成mock文件了。</p>
+<h2 id="gomock的接口使用"><a href="#gomock的接口使用" class="headerlink" title="gomock的接口使用"></a>gomock的接口使用</h2><p>在生成了mock实现代码之后，我们就可以进行正常使用了。这里假设结合testing进行使用（当然你也可考虑使用GoConvey）。我们就可以<br>在单元测试代码里面首先创建一个mock控制器：</p>
+<pre><code>mockCtl := gomock.NewController(t)
+</code></pre><p>将<code>* testing.T</code>传递给gomock生成一个”Controller”对象，该对象控制了整个Mock的过程。在操作完后还需要进行回收，所以一般会在New后面defer一个Finish</p>
+<pre><code>defer mockCtl.Finish()
+</code></pre><p>然后就是调用mock生成代码里面为我们实现的接口对象：</p>
+<pre><code>mockSpider := spider.NewMockSpider(mockCtl)
+</code></pre><p>这里的”spider”是mockgen命令里面传递的报名，后面是<code>NewMockXxxx</code>格式的对象创建函数”Xxx”是接口名。这里需要传递控制器对象进去。返回一个接口的实现对象。</p>
+<p>有了实现对象，我们就可以调用其断言方法了:<code>EXPECT()</code></p>
+<p>这里gomock非常牛的采用了链式调用法，和Swfit以及ObjectiveC里面的Masonry库一样，通过”.”连接函数调用，可以像链条一样连接下去。</p>
+<pre><code>mockSpider.EXPECT().GetBody().Return(&quot;go1.8.3&quot;)
+</code></pre><p>这里的每个”.”调用都得到一个”Call”对象，该对象有如下方法：</p>
+<pre><code>func (c *Call) After(preReq *Call) *Call
+func (c *Call) AnyTimes() *Call
+func (c *Call) Do(f interface{}) *Call
+func (c *Call) MaxTimes(n int) *Call
+func (c *Call) MinTimes(n int) *Call
+func (c *Call) Return(rets ...interface{}) *Call
+func (c *Call) SetArg(n int, value interface{}) *Call
+func (c *Call) String() string
+func (c *Call) Times(n int) *Call
+</code></pre><p>这里<code>EXPECT()</code>得到实现的对象，然后调用实现对象的接口方法，接口方法返回第一个”Call”对象，<br>然后对其进行条件约束。</p>
+<p>上面约束都可以在文档中或者根据字面意思进行理解，这里列举几个例子：</p>
+<h3 id="指定返回值"><a href="#指定返回值" class="headerlink" title="指定返回值"></a>指定返回值</h3><p>如我们的例子，调用Call的<code>Return</code>函数，可以指定接口的返回值：</p>
+<pre><code>mockSpider.EXPECT().GetBody().Return(&quot;go1.8.3&quot;)
+</code></pre><p>这里我们指定返回接口函数<code>GetBody()</code>返回”go1.8.3”。</p>
+<h3 id="指定执行次数"><a href="#指定执行次数" class="headerlink" title="指定执行次数"></a>指定执行次数</h3><p>有时候我们需要指定函数执行多次，比如接受网络请求的函数，计算其执行了多少次。</p>
+<pre><code>mockSpider.EXPECT().Recv().Return(nil).Times(3)
+</code></pre><p>执行三次Recv函数，这里还可以有另外几种限制：</p>
+<ul>
+<li>AnyTimes() ： 0到多次</li>
+<li>MaxTimes(n int) ：最多执行n次，如果没有设置</li>
+<li>MinTimes(n int) ：最少执行n次，如果没有设置</li>
+</ul>
+<h3 id="指定执行顺序"><a href="#指定执行顺序" class="headerlink" title="指定执行顺序"></a>指定执行顺序</h3><p>有时候我们还要指定执行顺序，比如要先执行Init操作，然后才能执行Recv操作。</p>
+<pre><code>initCall := mockSpider.EXPECT().Init()
+mockSpider.EXPECT().Recv().After(initCall)
+</code></pre><h2 id="再来回望官方Sample"><a href="#再来回望官方Sample" class="headerlink" title="再来回望官方Sample"></a>再来回望官方Sample</h2><p>Sample的结构如下：</p>
+<pre><code>sample/
+├── README.md
+├── imp1
+│   └── imp1.go
+├── imp2
+│   └── imp2.go
+├── imp3
+│   └── imp3.go
+├── imp4
+│   └── imp4.go
+├── mock_user
+│   └── mock_user.go
+├── user.go
+└── user_test.go
+</code></pre><p>这里，user.go是包含要mock的接口函数的目标文件，而imp1-4是user.go里面接口依赖的文件用来模拟”-imports”和”-aux_files”选项。</p>
+<p>user_test.go 文件如同我们的test文件，是对gomock的调用。</p>
+<p>而mock_user是生成mock文件的目录。里面的mock_user.go是通过mockgen生成的。</p>
+<p>这里我们看到user.go有generate的注释：</p>
+<pre><code>//go:generate mockgen -destination mock_user/mock_user.go github.com/golang/mock/sample Index,Embed,Embedded
+</code></pre><p>这里指定了同一个包里面的三个接口。然后定义了三个接口，里面方法有依赖impx四个目录中的文件：</p>
+<pre><code>type Embed interface {
+    ...
+}
+
+type Embedded interface {
+    ...
+}
+
+type Index interface {
+    ...
+    ForeignOne(imp1.Imp1)
+    ForeignTwo(renamed2.Imp2)
+    ForeignThree(Imp3)
+    ForeignFour(imp_four.Imp4)
+    ...
+}
+</code></pre><p>以及其他函数。</p>
+<p>最后来看调用，在user_test.go中首先创建控制器并调用其Finish函数：</p>
+<pre><code>ctrl := gomock.NewController(t)
+defer ctrl.Finish()
+</code></pre><p>然后就是如上面我介绍的，这里分开在几个不同Test函数中，流程基本上，依次创建mock对象：</p>
+<pre><code>mockIndex := mock_user.NewMockIndex(ctrl)
+</code></pre><p>然后调用其mock的方法：</p>
+<pre><code>mockIndex.EXPECT().Put(&quot;a&quot;, 1)
+
+boolc := make(chan bool)
+mockIndex.EXPECT().ConcreteRet().Return(boolc)
+</code></pre><p>最后运行<code>go test</code>就可以进行测试了。</p>
+<pre><code>$ go test
+PASS
+ok      github.com/golang/mock/sample    0.013s
+</code></pre>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2016/04/10/golang/nats/have_a_try_with_gnatcd/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">NATS之gnatcd初体验</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'libcz'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <p><a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />本站采用<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">知识共享Attribution-NoDerivatives 4.0 国际许可协议</a>进行许可。</p>
+    	<div class="footer-left">
+    		&copy; 2017 C Z
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    
+  <link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/blog/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
