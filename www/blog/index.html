@@ -103,7 +103,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 20px;">golang</a> <a href="/blog/tags/gomock/" style="font-size: 10px;">gomock</a>
+						<a href="/blog/tags/NATS/" style="font-size: 10px;">NATS</a> <a href="/blog/tags/UID/" style="font-size: 10px;">UID</a> <a href="/blog/tags/cli/" style="font-size: 10px;">cli</a> <a href="/blog/tags/gRPC/" style="font-size: 10px;">gRPC</a> <a href="/blog/tags/gnatsd/" style="font-size: 10px;">gnatsd</a> <a href="/blog/tags/golang/" style="font-size: 20px;">golang</a> <a href="/blog/tags/gomock/" style="font-size: 10px;">gomock</a>
 					</div>
 				</section>
 				
@@ -160,6 +160,138 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-golang/opensource/ksuid/start_ksuid" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/blog/2017/08/24/golang/opensource/ksuid/start_ksuid/" class="article-date">
+  	<time datetime="2017-08-23T16:00:00.000Z" itemprop="datePublished">2017-08-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2017/08/24/golang/opensource/ksuid/start_ksuid/">排序友好的KSUID</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <img src="/blog/2017/08/24/golang/opensource/ksuid/start_ksuid/asset_ZMiKWCG5.png" alt="asset_ZMiKWCG5" title="asset_ZMiKWCG5">
+<p>一个生成UUID并提供K-Sort功能的库</p>
+<h2 id="KSUID官方介绍"><a href="#KSUID官方介绍" class="headerlink" title="KSUID官方介绍"></a>KSUID官方介绍</h2><p>KSUID是一个提供K-Sort排序功能的UUID库。其生成UUID的方式遵从<a href="https://www.ietf.org/rfc/rfc4122.txt" target="_blank" rel="external">RFC 4122 </a>定义<br>的第四代UUID计算方式。同时为了方便按照其生成的时间先后进行排序，故加入了<br>时间戳信息。</p>
+<p>KSUID生成了一段20字节的字符串。里面包含了32位的UTC时间戳和128位的随机数，时间戳采用了大端序（所以可以把这段解压出来，做时间排序）。字符串采用27个字母数字的base62编码.</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/UID/">UID</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/blog/2017/08/24/golang/opensource/ksuid/start_ksuid/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-golang/OO/is_go_object_oriented/is_go_object_oriented" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/blog/2017/08/22/golang/OO/is_go_object_oriented/is_go_object_oriented/" class="article-date">
+  	<time datetime="2017-08-21T16:00:00.000Z" itemprop="datePublished">2017-08-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2017/08/22/golang/OO/is_go_object_oriented/is_go_object_oriented/">Go是面向对象的么？</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【原文】<a href="https://flaviocopes.com/golang-is-go-object-oriented/" target="_blank" rel="external">IS GO OBJECT ORIENTED?</a></p>
+<p>有时候我会读到一些文章说“Go是面向对象的”,有时候又会看到一些文章说“Go不能实现面向对象，因为Go里面没有class”</p>
+<p>所以我就Go是否面向对象，写下了这篇文章。</p>
+<p>对于这个问题的答案，拥有不同开发语言背景的人可能会有不同的理解。比如，如果你之前是一个C程序猿，那么，很明显<br>Go已经携带了大量面向对象的特性了；而如果你之前是Java程序猿，可能你会觉得Go看上去不那么面向对象。</p>
+<p>所以在考虑这个问题的时候，应该放下自己先前对“其他语言”的执念，而从Go本身的思想出发。</p>
+<p>基于这样的条件，我得到的答案是：Go是面向对象的，并且是一种超凡脱俗的形式来面向对象。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/golang/">golang</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/blog/categories/golang/">golang</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/blog/2017/08/22/golang/OO/is_go_object_oriented/is_go_object_oriented/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-golang/testing/gomock/test_with_gomock" class="article article-type-post" itemscope itemprop="blogPost">
   
